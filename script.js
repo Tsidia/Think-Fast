@@ -43,9 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
             'images/asteroid1.png',
             'images/asteroid2.png',
             'images/asteroid3.png',
-			'images/asteroid4.png',
-			'images/asteroid5.png',
-            // Add more images as needed
+            'images/asteroid4.png',
+            'images/asteroid5.png'
         ];
         const randomIndex = Math.floor(Math.random() * asteroidImages.length);
         return asteroidImages[randomIndex];
@@ -133,7 +132,10 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(updateTimer);
     }
 
-    createAsteroid();
-    setTimeout(increaseDifficulty, speedIncreaseInterval);
-    requestAnimationFrame(updateTimer);
+    setTimeout(() => {
+        startTime = Date.now();
+        createAsteroid();
+        setTimeout(increaseDifficulty, speedIncreaseInterval);
+        requestAnimationFrame(updateTimer);
+    }, 1000); // 1-second delay before starting the game
 });
