@@ -1,0 +1,66 @@
+/* styles.css */
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    cursor: none; /* Hide the default cursor */
+    background-color: black;
+}
+
+#gameArea {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#cursor {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+#timer {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    color: white;
+    z-index: 10;
+}
+
+.asteroid {
+    position: absolute;
+    width: 50px; /* Adjust size as needed */
+    height: 50px; /* Adjust size as needed */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none; /* Ensure asteroids don't interfere with cursor */
+}
+
+@keyframes explode {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(3);
+    }
+}
+
+.explosion {
+    position: absolute;
+    width: 80px; /* Increased size for visibility */
+    height: 80px; /* Increased size for visibility */
+    background-color: orange;
+    border-radius: 50%;
+    opacity: 1;
+    animation: explode 0.7s forwards; /* Slightly longer animation */
+    pointer-events: none; /* Ensure explosion doesn't interfere with cursor */
+}
