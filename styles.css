@@ -17,10 +17,10 @@ body, html {
 
 #cursor {
     position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: red;
-    border-radius: 50%;
+    width: 40px; /* Adjust size as needed */
+    height: 40px; /* Adjust size as needed */
+    background: url('images/cursor.png') no-repeat center center;
+    background-size: contain;
     pointer-events: none;
 }
 
