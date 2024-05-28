@@ -3,11 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const gameArea = document.getElementById('gameArea');
     const cursor = document.getElementById('cursor');
     const timerDisplay = document.getElementById('timer');
+    const backgroundMusic = document.getElementById('backgroundMusic');
     let asteroidFrequency = 0; // Delay between asteroids
     let asteroidSpeed = 10; // Initial speed at which asteroids move
     let gameOver = false;
     const speedIncreaseInterval = 1000; // Increase speed every 1 second
     const speedIncreaseFactor = 0.3; // Speed increase factor
+    const songDuration = 124; // Total song duration in seconds (2 minutes and 4 seconds)
+    const introDuration = 8; // Intro duration in seconds
     let startTime = Date.now();
 
     document.addEventListener('mousemove', (e) => {
@@ -101,7 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     createExplosion(cursorRect.left + cursorRect.width / 2, cursorRect.top + cursorRect.height / 2);
 
                     setTimeout(() => {
-                        alert(`Game Over! You survived for ${((Date.now() - startTime) / 1000).toFixed(2)} seconds. Reload the page to play again.`);
+                        alert(`Game Over! You survived for ${((Date.now() - startTime) / 1000).toFixed(2)} seconds. 
+                        Music by Maddie Doktor. Check out her YouTube channel: https://www.youtube.com/@maddiedoktor/videos. 
+                        Original track: https://www.youtube.com/watch?v=T-JIaRhI19g`);
                     }, 700); // Delay the alert to allow explosion animation to play
                     clearInterval(moveInterval);
                 }
@@ -128,14 +133,28 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateTimer() {
         if (gameOver) return;
         const elapsedTime = (Date.now() - startTime) / 1000;
-        timerDisplay.textContent = `Time: ${elapsedTime.toFixed(2)}s`;
+        const remainingTime = Math.max(songDuration - elapsedTime, 0);
+        timerDisplay.textContent = `Time: ${remainingTime.toFixed(2)}s`;
+
+        if (remainingTime <= 0) {
+            gameOver = true;
+            alert(`Victory! You survived the entire song! 
+            Music by Maddie Doktor. Check out her YouTube channel: https://www.youtube.com/@maddiedoktor/videos. 
+            Original track: https://www.youtube.com/watch?v=T-JIaRhI19g`);
+            return;
+        }
+
         requestAnimationFrame(updateTimer);
     }
 
+    // Start the timer and music immediately
+    backgroundMusic.play();
+    startTime = Date.now();
+    requestAnimationFrame(updateTimer);
+
+    // Start the asteroids after the intro duration
     setTimeout(() => {
-        startTime = Date.now();
         createAsteroid();
         setTimeout(increaseDifficulty, speedIncreaseInterval);
-        requestAnimationFrame(updateTimer);
-    }, 1000); // 1-second delay before starting the game
+    }, introDuration * 1000); // 7-second delay to match the song's intro
 });
