@@ -104,9 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     createExplosion(cursorRect.left + cursorRect.width / 2, cursorRect.top + cursorRect.height / 2);
 
                     setTimeout(() => {
-                        alert(`Game Over! You survived for ${((Date.now() - startTime) / 1000).toFixed(2)} seconds. 
-                        Music by Maddie Doktor. Check out her YouTube channel: https://www.youtube.com/@maddiedoktor/videos. 
-                        Original track: https://www.youtube.com/watch?v=T-JIaRhI19g`);
+                        alert(`Rip [*] You survived for ${((Date.now() - startTime) / 1000).toFixed(2)} seconds. 
+                        Music by Maddie Doktor, used with permission. https://www.youtube.com/@maddiedoktor/videos.`);
                     }, 700); // Delay the alert to allow explosion animation to play
                     clearInterval(moveInterval);
                 }
@@ -138,9 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (remainingTime <= 0) {
             gameOver = true;
-            alert(`Victory! You survived the entire song! 
-            Music by Maddie Doktor. Check out her YouTube channel: https://www.youtube.com/@maddiedoktor/videos. 
-            Original track: https://www.youtube.com/watch?v=T-JIaRhI19g`);
+            alert(`You win! Music by Maddie Doktor, used with permission`);
             return;
         }
 
