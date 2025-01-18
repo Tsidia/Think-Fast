@@ -1,9 +1,11 @@
-// script.js
 document.addEventListener('DOMContentLoaded', () => {
     const gameArea = document.getElementById('gameArea');
     const cursor = document.getElementById('cursor');
     const timerDisplay = document.getElementById('timer');
     const backgroundMusic = document.getElementById('backgroundMusic');
+    const audioOverlay = document.getElementById('audioOverlay');
+    const enableAudioBtn = document.getElementById('enableAudioBtn');
+
     let asteroidFrequency = 0; // Delay between asteroids
     let asteroidSpeed = 10; // Initial speed at which asteroids move
     let gameOver = false;
@@ -13,6 +15,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const introDuration = 8; // Intro duration in seconds
     let startTime = Date.now();
 
+    // Only play music and start the game logic after user clicks "Enable Audio"
+    enableAudioBtn.addEventListener('click', () => {
+        // Attempt to play background music
+        backgroundMusic.play().then(() => {
+            // Hide overlay
+            audioOverlay.style.display = 'none';
+
+            // Start the timer
+            startTime = Date.now();
+            requestAnimationFrame(updateTimer);
+
+            // Start asteroids after the intro
+            setTimeout(() => {
+                createAsteroid();
+                setTimeout(increaseDifficulty, speedIncreaseInterval);
+            }, introDuration * 1000);
+
+        }).catch((err) => {
+            // Handle any play() promise rejection
+            console.error('Audio playback failed:', err);
+            alert('Could not enable audio automatically. Please check your browser settings.');
+        });
+    });
+
+    // Move custom cursor
     document.addEventListener('mousemove', (e) => {
         cursor.style.left = `${e.clientX - cursor.offsetWidth / 2}px`;
         cursor.style.top = `${e.clientY - cursor.offsetHeight / 2}px`;
@@ -25,14 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
             explosion.className = 'explosion';
             const offsetX = (Math.random() - 0.5) * 50;
             const offsetY = (Math.random() - 0.5) * 50;
-            explosion.style.left = `${x + offsetX - 40}px`; // Adjusted to center explosion
-            explosion.style.top = `${y + offsetY - 40}px`;  // Adjusted to center explosion
+            explosion.style.left = `${x + offsetX - 40}px`;
+            explosion.style.top = `${y + offsetY - 40}px`;
             explosion.style.animationDelay = `${Math.random() * 0.5}s`;
             gameArea.appendChild(explosion);
 
             setTimeout(() => {
                 gameArea.removeChild(explosion);
-            }, 700); // Adjusted to match animation duration
+            }, 700);
         }
     }
 
@@ -62,8 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const asteroid = document.createElement('div');
             asteroid.className = 'asteroid';
             asteroid.style.backgroundImage = `url(${getRandomAsteroidImage()})`;
-            const spawnEdge = Math.floor(Math.random() * 4); // Random edge: 0 = top, 1 = right, 2 = bottom, 3 = left
+            const spawnEdge = Math.floor(Math.random() * 4);
 
+            // Spawn asteroid along a random screen edge
             if (spawnEdge === 0) { // Top edge
                 asteroid.style.left = `${Math.random() * window.innerWidth}px`;
                 asteroid.style.top = `-50px`;
@@ -90,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const asteroidRect = asteroid.getBoundingClientRect();
                 const cursorRect = cursor.getBoundingClientRect();
 
+                // Collision check
                 if (
                     asteroidRect.left < cursorRect.right &&
                     asteroidRect.right > cursorRect.left &&
@@ -101,16 +130,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     cursor.style.border = '2px solid red';
                     cursor.style.borderRadius = '50%';
 
-                    createExplosion(cursorRect.left + cursorRect.width / 2, cursorRect.top + cursorRect.height / 2);
+                    createExplosion(
+                        cursorRect.left + cursorRect.width / 2,
+                        cursorRect.top + cursorRect.height / 2
+                    );
 
                     setTimeout(() => {
                         alert(`Rip [*] You survived for ${((Date.now() - startTime) / 1000).toFixed(2)} seconds. 
-                        Music by Maddie Doktor, used with permission. https://www.youtube.com/@maddiedoktor/videos.`);
-                    }, 700); // Delay the alert to allow explosion animation to play
+Music by Maddie Doktor, used with permission. https://www.youtube.com/@maddiedoktor/videos.`);
+                    }, 700);
+
                     clearInterval(moveInterval);
                 }
 
-                if (asteroidRect.bottom < 0 || asteroidRect.top > window.innerHeight || asteroidRect.right < 0 || asteroidRect.left > window.innerWidth) {
+                // If asteroid goes off screen, remove it
+                if (
+                    asteroidRect.bottom < 0 ||
+                    asteroidRect.top > window.innerHeight ||
+                    asteroidRect.right < 0 ||
+                    asteroidRect.left > window.innerWidth
+                ) {
                     gameArea.removeChild(asteroid);
                     clearInterval(moveInterval);
                 } else {
@@ -144,14 +183,5 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(updateTimer);
     }
 
-    // Start the timer and music immediately
-    backgroundMusic.play();
-    startTime = Date.now();
-    requestAnimationFrame(updateTimer);
-
-    // Start the asteroids after the intro duration
-    setTimeout(() => {
-        createAsteroid();
-        setTimeout(increaseDifficulty, speedIncreaseInterval);
-    }, introDuration * 1000); // 7-second delay to match the song's intro
+    // IMPORTANT: Do NOT autoplay here. Let the user click the button first.
 });

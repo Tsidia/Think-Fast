@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width">
     <title>Think Fast</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -12,6 +12,15 @@
         <div id="timer">Time: 0.00s</div>
         <audio id="backgroundMusic" src="VisionsOfThePuppetMaster.mp3" preload="auto"></audio>
     </div>
+    
+    <!-- Overlay for audio permission -->
+    <div id="audioOverlay">
+        <div id="overlayContent">
+            <p>Audio is disabled by default. Click below to enable music.</p>
+            <button id="enableAudioBtn">Enable Audio</button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

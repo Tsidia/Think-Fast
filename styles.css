@@ -1,4 +1,3 @@
-/* styles.css */
 body, html {
     margin: 0;
     padding: 0;
@@ -17,8 +16,8 @@ body, html {
 
 #cursor {
     position: absolute;
-    width: 40px; /* Adjust size as needed */
-    height: 40px; /* Adjust size as needed */
+    width: 40px;
+    height: 40px;
     background: url('images/cursor.png') no-repeat center center;
     background-size: contain;
     pointer-events: none;
@@ -35,12 +34,12 @@ body, html {
 
 .asteroid {
     position: absolute;
-    width: 50px; /* Adjust size as needed */
-    height: 50px; /* Adjust size as needed */
+    width: 50px;
+    height: 50px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    pointer-events: none; /* Ensure asteroids don't interfere with cursor */
+    pointer-events: none;
 }
 
 @keyframes explode {
@@ -56,11 +55,37 @@ body, html {
 
 .explosion {
     position: absolute;
-    width: 80px; /* Increased size for visibility */
-    height: 80px; /* Increased size for visibility */
+    width: 80px;
+    height: 80px;
     background-color: orange;
     border-radius: 50%;
     opacity: 1;
-    animation: explode 0.7s forwards; /* Slightly longer animation */
-    pointer-events: none; /* Ensure explosion doesn't interfere with cursor */
+    animation: explode 0.7s forwards;
+    pointer-events: none;
+}
+
+/* Overlay styles */
+#audioOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Make sure it’s on top of everything */
+}
+
+#overlayContent {
+    text-align: center;
+    color: #fff;
+}
+
+#enableAudioBtn {
+    margin-top: 1em;
+    padding: 0.5em 1em;
+    font-size: 1rem;
+    cursor: pointer;
 }
